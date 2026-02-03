@@ -2,10 +2,11 @@ version: 0.2
 
 env:
   variables:
-    DOCKER_REGISTRY_URL: docker.io
-    DOCKER_REGISTRY_USERNAME: your_dockerhub_username
+    IMAGE_NAME: simple-python-app
   parameter-store:
-    DOCKER_REGISTRY_PASSWORD: /myapp/dockerhub/token
+    DOCKER_REGISTRY_USERNAME: /myapp/docker-credentials/username
+    DOCKER_REGISTRY_PASSWORD: /myapp/docker-credentials/password
+    DOCKER_REGISTRY_URL: /myapp/docker-registry/url
 
 phases:
   pre_build:
@@ -16,9 +17,9 @@ phases:
   build:
     commands:
       - echo "Building Docker image"
-      - docker build -t your_dockerhub_username/simple-python-app:latest .
+      - docker build -t $DOCKER_REGISTRY_USERNAME/$IMAGE_NAME:latest .
 
   post_build:
     commands:
       - echo "Pushing image to DockerHub"
-      - docker push your_dockerhub_username/simple-python-app:latest
+      - docker push $DOCKER_REGISTRY_USERNAME/$IMAGE_NAME:latest
