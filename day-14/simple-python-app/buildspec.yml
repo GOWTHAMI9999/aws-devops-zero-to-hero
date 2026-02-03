@@ -6,7 +6,6 @@ env:
   parameter-store:
     DOCKER_REGISTRY_USERNAME: /myapp/docker-credentials/username
     DOCKER_REGISTRY_PASSWORD: /myapp/docker-credentials/password
-    DOCKER_REGISTRY_URL: /myapp/docker-registry/url
 
 phases:
   pre_build:
@@ -16,6 +15,8 @@ phases:
 
   build:
     commands:
+      - echo "Changing directory to app folder"
+      - cd day-14/simple-python-app
       - echo "Building Docker image"
       - docker build -t $DOCKER_REGISTRY_USERNAME/$IMAGE_NAME:latest .
 
